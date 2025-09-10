@@ -5,27 +5,38 @@ const legs = [
     {
         name: 'Armature_0',
         index: 0,
-
+        textureURL: 'textures/cat_legs_texture.png',
     },
     {
         name: 'Armature_1',
         index: 1,
+        textureURL: 'textures/fairy_wings_texture.png',
+        meshNames: ['Mesh001_4','Mesh001_3', 'Mesh001_5']
     },
     {
         name: 'Armature_2',
-        index: 2
+        index: 2,
+        textureURL: 'textures/hoverbike_texture.png',
+        meshNames: ['Mesh002']
+        
     },
     {
         name: 'Armature_3',
-        index: 3
+        index: 3,
+        textureURL: 'textures/popcorn_box_texture.png ',
+        meshNames: ['Mesh003_2']
     },
     {
         name: 'Armature_4',
-        index: 4
+        index: 4,
+        textureURL: 'textures/rideable_pig_regular_texture.png ',
+        meshNames: ['Mesh004_1']
     },
     {
         name: 'Armature_5',
-        index: 5
+        index: 5,
+        textureURL: 'textures/tall_boots_texture.png ',
+        meshNames: ['Mesh005_1, Mesh005_2']
     }
 ]
 
@@ -33,6 +44,7 @@ export class Model {
     constructor(scene) {
         this.scene = scene;
         this.loader = new GLTFLoader();
+        this.textureLoader = new THREE.TextureLoader();
 
         this.legsCollectionModel,
             this.bodyCollectionModel,
@@ -84,9 +96,38 @@ export class Model {
         this.loader.load('/models/legs.glb', (gltf) => {
             const model = gltf.scene;
 
-            const arma_1 = model.children[0];
+            const index = 0;
 
-            console.log(model);
+            const arma_1 = model.children[2];
+
+            const url = legs[index].textureURL;
+            // console.log(url)
+
+            arma_1.children
+
+            arma_1.traverse((child) => {
+                if (child.isMesh) {
+                    console.log(child);
+
+                    if (child.name === 'Mesh002') {
+
+                        child.material.color = new THREE.Color(0xff6347);
+                    }
+                }
+
+            })
+            // console.log(this.textureLoader)
+
+            // this.textureLoader.load(url, (texture) => {
+            //     console.log(texture)
+            //     console.log(arma_1)
+            //     arma_1.children[0].children[0].material.map = texture;
+            //     arma_1.children[0].children[0].material.needsUpdate = true;
+            // }, undefined, (error) => {
+            //     console.error('Ошибка загрузки текстуры:', error);
+            // })
+
+            // console.log(model);
 
             // model.scale.set(10, 10, 10);
 
