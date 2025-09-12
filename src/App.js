@@ -25,6 +25,7 @@ export default class App {
         this.model = new Model(this.scene);
 
         this.resize();
+
         this.controls();
     }
 
@@ -33,27 +34,26 @@ export default class App {
         controls.update();
     }
 
-    start() {
+    async start() {
         this.render();
 
         this.env.loadBackground();
         this.env.initLight();
 
-        this.model.loadBody();
-        this.model.loadLegs();
+        await this.model.loadModels();
+
         // model.loadWeapon();
         this.events();
-
-
+        this.env.loadTextures();
 
     }
 
     events() {
         // левое меню
-        document.getElementsByTagName('roll-button[data-part="body"]').rollCollection = () => this.model.setWeapon();
-        document.getElementsByTagName('roll-button[data-part="body"]').rollCollection = () => this.model.setBody();
-        document.getElementsByTagName('roll-button[data-part="body"]').rollCollection = () => this.model.setLegs();
-        document.getElementsByTagName('roll-button[data-part="body"]').rollCollection = () => this.env.setBackground();
+        document.querySelector('roll-button[data-part="body"]').rollCollection = (side, type) => this.model.rollParts(side, type);
+        document.querySelector('roll-button[data-part="legs"]').rollCollection = (side, type) => this.model.rollParts(side, type);
+        document.querySelector('roll-button[data-part="weapon"]').rollCollection = (side, type) => this.model.rollParts(side, type);
+        document.querySelector('roll-button[data-part="background"]').rollCollection = (side, type) => this.env.rollBackground(side, type);
         // правое меню
 
         document.querySelector('.ui-container').addEventListener("dblclick", (e) => {

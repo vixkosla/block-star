@@ -11,14 +11,14 @@ const legs = [
         name: 'Armature_1',
         index: 1,
         textureURL: 'textures/fairy_wings_texture.png',
-        meshNames: ['Mesh001_4','Mesh001_3', 'Mesh001_5']
+        meshNames: ['Mesh001_4', 'Mesh001_3', 'Mesh001_5']
     },
     {
         name: 'Armature_2',
         index: 2,
         textureURL: 'textures/hoverbike_texture.png',
         meshNames: ['Mesh002']
-        
+
     },
     {
         name: 'Armature_3',
@@ -50,123 +50,107 @@ export class Model {
             this.bodyCollectionModel,
             this.weaponCollectionModel;
 
-        this.weapon = '';
-        this.legs = '';
-        this.body = '';
+        this.weaponIndex = 2;
+        this.legsIndex = 4;
+        this.bodyIndex = 3;
 
         // this.
     }
 
-    loadBody() {
+    initScene() {
+        if (!this.bodyCollectionModel || !this.legsCollectionModel) {
+            console.warn('initScene called before models finished loading');
+            return;
+        }
 
-        this.loader.load('/models/bodies.glb', (gltf) => {
-            const model = gltf.scene;
+        console.log("model:", this.bodyCollectionModel)
+        this.cleanModel(this.bodyCollectionModel);
+        this.cleanModel(this.legsCollectionModel);
+        // this.cleanModel(this.weaponCollectionModel);
 
-            // this.scene.add(model);
-            console.log('Model loaded');
-            console.log(gltf);
+        this.setModelPart(this.bodyCollectionModel, this.bodyIndex)
+        this.setModelPart(this.legsCollectionModel, this.legsIndex)
 
-            const arma_1 = model.children[3];
 
-            // console.log(model.children[0].name);
+        // this.setLegs();
+        // this.setBody();
+        // this.setWeapon();
 
-            arma_1.scale.set(0.02, 0.02, 0.02);
-            arma_1.position.set(0, -1, 0);
-            // this.scene.add(arma_1);
 
-            const childs = [];
+    }
 
-            model.traverse(function (child, index) {
-                if (child.isMesh) {
-                    child.visible = true;
-                    child.position.set(0, 0, 0);
-                    childs.push(child);
-                }
-            });
-
-            childs.forEach((child, i) => {
-                child.position.set(i * 0.1, 0, 0);
-                // console.log(child.name);
-                // this.scene.add(child);
-            });
+    cleanModel(model) {
+        if (!model || !model.children) return;
+        console.log(model.children)
+        const parts = model.children
+        parts.forEach((child) => {
+            // выключаем видимость всей ветки
+            child.traverse((node) => { node.visible = false; });
         });
     }
 
-    loadLegs() {
-        this.loader.load('/models/legs.glb', (gltf) => {
-            const model = gltf.scene;
+    setModelPart(model, index) {
+        if (!model || !model.children) return;
+        const parts = model.children;
+        const part = parts[index];
+        console.log('part:', part);
+        if (!part) return;
+        // включаем видимость всей ветки
+        part.traverse((node) => { node.visible = true; });
+    }
 
-            const index = 0;
+    async loadBody() {
 
-            const arma_1 = model.children[2];
+        const gltf = await this.loader.loadAsync('/models/bodies.glb')
+        const model = gltf.scene;
 
-            const url = legs[index].textureURL;
-            // console.log(url)
-
-            arma_1.children
-
-            arma_1.traverse((child) => {
-                if (child.isMesh) {
-                    console.log(child);
-
-                    if (child.name === 'Mesh002') {
-
-                        child.material.color = new THREE.Color(0xff6347);
-                    }
-                }
-
-            })
-            // console.log(this.textureLoader)
-
-            // this.textureLoader.load(url, (texture) => {
-            //     console.log(texture)
-            //     console.log(arma_1)
-            //     arma_1.children[0].children[0].material.map = texture;
-            //     arma_1.children[0].children[0].material.needsUpdate = true;
-            // }, undefined, (error) => {
-            //     console.error('Ошибка загрузки текстуры:', error);
-            // })
-
-            // console.log(model);
-
-            // model.scale.set(10, 10, 10);
-
-            arma_1.scale.set(10, 10, 10);
-            // arma_1.position.set(0, 0, 0);
-            this.scene.add(arma_1);
+        const parts = model.children
+        parts.forEach((child, i) => {
+            child.visible = false;
+            child.scale.set(0.02, 0.02, 0.02);
         });
 
+        this.scene.add(model)
+        this.bodyCollectionModel = model;
+
+        return model;
     }
 
-    rollLegs(side = '') {
-        if (side === 'left') {
-            legs.forEach((leg, i) => {
-                const name = leg.name;
+    async loadLegs() {
+        const gltf = await this.loader.loadAsync('/models/legs.glb');
+        const model = gltf.scene;
 
-                // const 
+        const parts = model.children
+        parts.forEach((child, i) => {
+            console.log(child.name, child)
+            child.visible = false;
+            child.scale.set(0.2, 0.2, 0.2);
+            child.position.y = -3;
+            child.rotation.z = Math.PI;
+        });
 
-            })
-        }
+        this.scene.add(model);
 
+        this.legsCollectionModel = model;
 
-        if (side === 'right') {
-
-        }
+        return model;
     }
 
-    setLegs() {
-        legs.forEach((leg, i) => {
-            const name = leg.name;
+    async loadModels() {
+        await Promise.all([this.loadBody(), this.loadLegs()]);
+        this.initScene();
+    }
 
-            const legCollection = this.legs.children.filter(child => child.name === name);
+    rollParts(side = '', type = '') {
+        const collection = this[`${type}CollectionModel`];
+        let index = this[`${type}Index`];
 
-            const legs = [];
-            this.legsCollectionModel.children.forEach(child => legs.push(child));
+        const count = collection.children.length;
+        const delta = side === 'left' ? -1 : side === 'right' ? 1 : 0;
+        index = ((index + delta) % count + count) % count; // безопасное модуло
 
-            legs.forEach((leg, i) => { legs.visible = false; });
-            legs.filter((leg, i) => i === this.legs)
-
-
-        })
+        this[`${type}Index`] = index;
+        this.cleanModel(collection);
+        this.setModelPart(collection, index);
     }
 }
