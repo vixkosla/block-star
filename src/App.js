@@ -54,7 +54,9 @@ export default class App {
         document.querySelector('roll-button[data-part="legs"]').rollCollection = (side, type) => this.model.rollParts(side, type);
         document.querySelector('roll-button[data-part="weapon"]').rollCollection = (side, type) => this.model.rollParts(side, type);
         document.querySelector('roll-button[data-part="background"]').rollCollection = (side, type) => this.env.rollBackground(side, type);
+        
         // правое меню
+        document.querySelector('color-picker').changeColor = (color) => this.model.changeColor(color);
 
         document.querySelector('.ui-container').addEventListener("dblclick", (e) => {
             e.preventDefault(); // Отменяем двойной клик

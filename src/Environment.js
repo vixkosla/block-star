@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const url = ['./backgrounds/bakcground_0.jpg', './backgrounds/bakcground_1.jpg', './backgrounds/bakcground_2.jpg', './backgrounds/bakcground_3.jpg', './backgrounds/bakcground_4.jpg', './backgrounds/bakcground_5.jpg'];
+const url = ['./backgrounds/background_0.jpg', './backgrounds/background_1.jpg', './backgrounds/background_2.jpg', './backgrounds/background_3.jpg', './backgrounds/background_4.jpg', './backgrounds/background_5.jpg'];
 
 export class Environment {
     constructor(scene, renderer) {

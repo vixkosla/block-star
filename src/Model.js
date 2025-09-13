@@ -153,4 +153,8 @@ export class Model {
         this.cleanModel(collection);
         this.setModelPart(collection, index);
     }
+
+    changeColor(color) {
+        console.log('changeColor:', color);
+    }
 }
