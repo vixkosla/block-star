@@ -35,7 +35,7 @@ export class Scenario {
 
         // let seconds = 30;
 
-        let initial = 30;
+        let initial = 40;
 
         const seconds = (i) => `${i}s`;
 
@@ -79,6 +79,9 @@ export class Scenario {
     submitHandler() {
         const overlay = document.querySelector('.overlay-screen');
         const perfectScreen = document.querySelector('.perfect-screen');
+        const audio = document.getElementById('stars');
+
+        audio.play();
 
         overlay.style.display = 'block';
         perfectScreen.style.display = 'block';
@@ -87,7 +90,7 @@ export class Scenario {
 
         setTimeout(() => {
             this.perfectHandler();
-        }, 5000);
+        }, 10000);
 
     }
 
@@ -129,7 +132,16 @@ export class Scenario {
             // 1. Move to first element
             [".hand", { x: rect_1.left, y: rect_1.bottom }, { duration: 2 }],
             [".left-description", { opacity: 1 }, { duration: 2, at: "<" }],
-            [".hand", { scale: [1, 0.9, 1] }, { duration: 0.5, easing: "ease-in-out" }],
+            [".hand", { scale: [1, 0.9, 1] }, {
+                duration: 0.5, easing: "ease-in-out", onComplete: () => {
+                    if (target_one) {
+                        target_one.dispatchEvent(new Event('pointerdown'));
+                        console.log('event one');
+                    } else {
+                        console.error('target_one is not defined');
+                    }
+                }
+            }],
             // 2. Move to second
             [".hand", { x: rect_2.left, y: rect_2.bottom }, { duration: 1 }],
             [".hand", { scale: [1, 0.9, 1] }, { duration: 0.5, easing: "ease-in-out" }],
@@ -137,7 +149,7 @@ export class Scenario {
             [".left-description", { opacity: 0 }, { duration: 1 }]
         ];
 
-        const anim1 = animate(sequence1);
+        const anim1 = animate(sequence1, { delay: 1.5 });
 
         // After first sequence finishes, run callback and start second sequence
         anim1.finished.then(() => {

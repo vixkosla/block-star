@@ -25,6 +25,7 @@ class rollButton extends HTMLElement {
     const invoke = () => {
       this.changeMutableIcon();
       this.defaultIconStatus();
+      this.audio.play();
       // this.clearActiveColor();
       // this.muteIcon();
     }
@@ -38,6 +39,7 @@ class rollButton extends HTMLElement {
   constructor() {
     super();
     this.type = this.getAttribute("data-part");
+    this.audio = document.getElementById('swipe');
 
     const shadow = this.attachShadow({ mode: "open" });
 
@@ -70,8 +72,8 @@ class rollButton extends HTMLElement {
       .icon-container {
         width: 7vw;
         height: 7vw;
-        min-width: 48px;
-        min-height: 48px;
+        min-width: 40px;
+        min-height: 40px;
         background: url('${cellBright}') no-repeat;
         background-size: contain;
         background-position: center;
@@ -103,8 +105,7 @@ class rollButton extends HTMLElement {
 
   connectedCallback() {
     const btn = this.shadowRoot.querySelectorAll(".arrow");
-
-
+    const iconContainer = this.shadowRoot.querySelector('.icon-container');
 
     btn.forEach(element => {
       // Анимация появления
@@ -117,10 +118,19 @@ class rollButton extends HTMLElement {
       // Анимация при клике
 
       element.addEventListener("pointerdown", () => {
-        animate(element, { scale: [1, 0.9, 1] }, { duration: 0.3 });
+        animate(element, { scale: [1, 0.9, 1] }, { duration: 0.15 });
       });
 
     });
+
+    iconContainer.addEventListener('pointerdown', () => {
+      this.changeMutableIcon();
+      console.log('hey click on icon container')
+      this.defaultIconStatus();
+
+      // this.clearActiveColor();
+      // this.muteIcon();
+    })
   }
 
   changeMutableIcon() {
@@ -156,9 +166,9 @@ class rollButton extends HTMLElement {
 
 
     if (component.getAttribute("data-part") === activeType) {
-      container.style.backgroundImage = `url('${cellBright}')`;
-    } else {
       container.style.backgroundImage = `url('${cellDark}')`;
+    } else {
+      container.style.backgroundImage = `url('${cellBright}')`;
     }
 
 

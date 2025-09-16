@@ -16,6 +16,8 @@ app.start();
 scenario.initClock();
 scenario.initAnimations()
 scenario.animateHand();
+// scenario.playNow();
+
 
 
 

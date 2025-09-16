@@ -6,14 +6,29 @@ body,
   overflow: hidden;
   height: 100%;
   width: 100%;
-  /* max-width: 768px; */
-  /* max-height: 200px; */
-  /* aspect-ratio: 1.5; */
+  min-width: 640px;
+  min-height: 360px;
 }
 
 @font-face {
   font-family: 'Titan';
   src: url(./assets/fonts/Titan.ttf) format('truetype');
+}
+
+.audio-container {
+  position: absolute;
+  visibility: hidden;
+}
+
+.preloader {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .ui-container {
@@ -444,6 +459,7 @@ body,
   justify-content: flex-end;
   align-items: flex-start;
   flex-direction: row-reverse;
+  margin-top: 1vw;
 }
 
 
@@ -460,7 +476,7 @@ body,
 .mutable-icon {
   width: 3.5vw;
   height: 3.5vw;
-  transform: translateY(3.0vh);
+  transform: translateY(1.5vw);
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;

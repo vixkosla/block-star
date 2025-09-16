@@ -68,6 +68,8 @@ export default class App {
     }
 
     events() {
+        const audio = document.getElementById('dance');
+
         // левое меню
         document.querySelector('roll-button[data-part="body"]').rollCollection = (side, type) => this.model.rollParts(side, type);
         document.querySelector('roll-button[data-part="legs"]').rollCollection = (side, type) => this.model.rollParts(side, type);
@@ -80,6 +82,10 @@ export default class App {
         document.querySelector('.ui-container').addEventListener("dblclick", (e) => {
             e.preventDefault(); // Отменяем двойной клик
         });
+
+        document.addEventListener('pointerdown', (e) => {
+            audio.play();
+        })
     }
 
     render() {

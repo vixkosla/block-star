@@ -347,10 +347,13 @@ export class Model {
 
     initRandomButton() {
         const random = document.querySelector('.random');
+        const audio = document.getElementById('dice');
 
         random.addEventListener('pointerdown', () => {
             this.cleanModel(this.bodyCollectionModel);
             this.cleanModel(this.legsCollectionModel);
+
+            audio.play();
 
             this.bodyIndex = Math.floor(Math.random() * this.bodyCollectionModel.children.length);
             this.legsIndex = Math.floor(Math.random() * this.legsCollectionModel.children.length);

@@ -62,8 +62,8 @@ class colorPicker extends HTMLElement {
             }
 
             .icon-button {
-                width: 5vw;
-                height: 5vw;
+                width: 4vw;
+                height: 4vw;
                 background: url('${mark}') no-repeat center / cover;
                 pointer-events: auto;
             }
