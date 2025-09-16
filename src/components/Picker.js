@@ -15,7 +15,7 @@ class colorPicker extends HTMLElement {
 
         this.callback = callback;
 
-        cells.forEach(cell => {
+        [...cells, ...circles].forEach(cell => {
             cell.addEventListener('pointerdown', (e) => {
                 const color = getComputedStyle(cell).backgroundColor;
                 this.cleanSelected();
@@ -25,11 +25,11 @@ class colorPicker extends HTMLElement {
 
                 if (this.colors.length > 5) {
                     this.colors.pop();
-                } 
+                }
 
                 this.colors.unshift(color);
 
-                console.log('recently used colors:', this.colors);
+                // console.log('recently used colors:', this.colors);
                 this.updateRecentlyUsed();
             });
         })
@@ -145,8 +145,6 @@ class colorPicker extends HTMLElement {
     connectedCallback() {
         this.createPallete();
 
-        console.log('color picker connected');
-
         this.fillFirstRow();
         this.fillSecondRow();
 
@@ -159,10 +157,9 @@ class colorPicker extends HTMLElement {
     initButtonEvents() {
         const button = this.shadowRoot.querySelector('.submit-button');
         const palette = document.querySelector('.palette-container');
-        
+
         button.addEventListener('pointerdown', () => {
             palette.style.display = 'none';
-            console.log('palette closed');
         });
     }
 
@@ -172,7 +169,7 @@ class colorPicker extends HTMLElement {
 
 
         picker.addEventListener('pointerdown', () => {
-           palette.style.display = 'block'; 
+            palette.style.display = 'block';
         })
     }
 
@@ -181,7 +178,6 @@ class colorPicker extends HTMLElement {
         cells.forEach(cell => {
             cell.addEventListener('pointerdown', (e) => {
                 this.color = getComputedStyle(cell).backgroundColor;
-                console.log('color:', this.color);
                 this.updateRows();
             });
         });
@@ -214,7 +210,7 @@ class colorPicker extends HTMLElement {
             element.addEventListener('pointerdown', () => {
                 this.callback(color);
                 this.cleanSelected();
-                element.classList.add('selected');  
+                element.classList.add('selected');
             })
 
             container.appendChild(element);
@@ -264,11 +260,10 @@ class colorPicker extends HTMLElement {
         const prev = this.colors[i - 1] || 'purple';
         const next = this.colors[i + 1] || 'black';
 
-        this.cleanSelected();
-
-        for (let i = 0; i < 6; i++) {
-            rowFirst.children[i].style.backgroundColor = `color-mix(in srgb, ${prev} 15%, ${this.color}  ${i * 100 / 6}%)`;
-            rowSecond.children[i].style.backgroundColor = `color-mix(in srgb, ${this.color} 30%, ${next}  ${i * 100 / 6 }%)`;
+        this.cleanSelected(); for (let i = 0; i < 6; i++) { 
+            const p = i / 5; 
+            rowFirst.children[i].style.backgroundColor = `color-mix(in srgb, white ${(1 - p) * 100}%, ${this.color} ${p * 100}%)`; 
+            rowSecond.children[i].style.backgroundColor = `color-mix(in srgb, ${this.color} ${(1 - p) * 100}%, black ${p * 100}%)`; 
         }
     }
 

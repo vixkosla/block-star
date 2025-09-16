@@ -25,9 +25,14 @@ class rollButton extends HTMLElement {
     const invoke = () => {
       this.changeMutableIcon();
       this.defaultIconStatus();
+      // this.clearActiveColor();
       // this.muteIcon();
     }
 
+  }
+
+  set clearActiveColor(callback) {
+    this._clearActiveColor = callback();
   }
 
   constructor() {
@@ -119,7 +124,10 @@ class rollButton extends HTMLElement {
   }
 
   changeMutableIcon() {
+    if (this.type === 'background') return;
+
     const container = document.querySelector('.mutable-icon');
+    container.setAttribute('data-type', this.type);
 
     const url = `url('${this.getURLIcon()}')`;
     const currentURL = container.style.backgroundImage;
@@ -137,13 +145,11 @@ class rollButton extends HTMLElement {
 
   defaultIconStatus() {
 
-    console.log('defaultIconStatus')
 
     const containers = document.querySelectorAll('roll-button');
     const activeType = this.type;
 
 
-    console.log(containers)
 
     containers.forEach(component => {
     const container = component.shadowRoot.querySelector(".icon-container");

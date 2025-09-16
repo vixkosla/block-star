@@ -11,17 +11,81 @@
 <body>
   <div id="app">
     <div class="canvas-container">
+    </div>
 
+    <!-- div -->
+
+    <div class="hand-container">
+      <div class="hand"></div>
+    </div>
+
+    <div class="info-container">
+      <div class="left-description description" style="word-wrap: break-word">
+        You can try your luck and <br>
+        choose a random avatar.
+      </div>
+
+      <div class="right-description description" style="word-wrap: break-word">
+        You can choose avatar color
+      </div>
+
+      <div class="header">
+        <div class="header-container">
+          Create your BlockStar!
+        </div>
+      </div>
+
+      <div class="submit-icon">
+
+      </div>
+
+      <div class="overlay-screen">
+
+        <div class="perfect-screen">
+          <div class="perfect-stars"></div>
+          <div class="perfect-light"></div>
+          <div class="perfect-header">
+            <div class="perfect-header-container">
+              Perfect
+            </div>
+          </div>
+        </div>
+
+        <div class="results-screen">
+          <div class="results-diamonds"></div>
+          <div class="results-container">
+            <div class="results-container-container">
+              <div class="logo-container">
+                <div class="logo"></div>
+              </div>
+              <div class="results-header">WOW LOOKS GREAT</div>
+              <div class="results-description">
+                <div class="description-container">Your BlockStar</div>
+                <div class="description-container">adventure starts now!</div>
+              </div>
+              <div class="results-button">
+                <div class="results-button-container">
+                  PLAY NOW
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
     <div class="ui-container">
       <div class="ui-left">
 
         <div class="roll-menu">
-          <roll-button data-part="weapon" class="ui-button"></roll-button>
-          <roll-button data-part="body" class="ui-button"></roll-button>
-          <roll-button data-part="legs" class="ui-button"></roll-button>
+          <!-- <roll-button data-part="weapon" class="ui-button"></roll-button> -->
+          <roll-button id="first" data-part="body" class="ui-button"></roll-button>
+          <roll-button id="second" data-part="legs" class="ui-button"></roll-button>
           <roll-button data-part="background" class="ui-button"></roll-button>
-
+          <div class="random-container">
+            <div class="random ui-button"></div>
+          </div>
         </div>
       </div>
 
@@ -33,7 +97,7 @@
           </div>
           <div class="color-container">
 
-            <div class="picker-container ui-button">
+            <div id="third" class="picker-container ui-button">
               <div class="mutable-icon"></div>
             </div>
 

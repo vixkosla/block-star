@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const url = ['./backgrounds/background_0.jpg', './backgrounds/background_1.jpg', './backgrounds/background_2.jpg', './backgrounds/background_3.jpg', './backgrounds/background_4.jpg', './backgrounds/background_5.jpg'];
+const url = [ './backgrounds/background_1.jpg', './backgrounds/background_2.jpg', './backgrounds/background_3.jpg', './backgrounds/background_4.jpg', './backgrounds/background_5.jpg'];
 
 export class Environment {
     constructor(scene, renderer) {
@@ -27,6 +27,8 @@ export class Environment {
     }
 
     rollBackground(side = '', type = '') {
+        if (this.textures.length < 2) return console.error('Not enough textures to roll background'  );
+
         const count = this.textures.length;
         const delta = side === 'left' ? -1 : side === 'right'? 1 : 0;
 
